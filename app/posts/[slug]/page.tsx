@@ -13,11 +13,13 @@ export async function generateStaticParams() {
   return items.map((i) => ({ slug: i.params.slug }));
 }
 
-export default async function PostDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+type PostPageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export default async function PostDetailPage({ params }: PostPageProps) {
+  const { slug } = await params;
+
   const post = await sanityFetch<{
     title?: string;
     content?: any;
@@ -26,7 +28,7 @@ export default async function PostDetailPage({
     publishedAt?: string;
   }>({
     query: postQuery,
-    params: { slug: params.slug },
+    params: { slug },
   });
 
   console.log("post", post);

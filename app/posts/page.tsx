@@ -6,11 +6,12 @@ import Image from "next/image";
 import { portableTextComponents } from "../components/portableTextComponents";
 import { PortableText } from "@portabletext/react";
 
-export default async function PostsPage({
-  searchParams,
-}: {
-  searchParams?: { page?: string };
-}) {
+type PostsPageProps = {
+  searchParams?: Promise<{ page?: string }>;
+};
+
+export default async function PostsPage({ searchParams }: PostsPageProps) {
+  const resolvedSearchParams = searchParams ? await searchParams : {};
   function blocksToPlainText(blocks: any): string {
     if (!Array.isArray(blocks)) return "";
     return blocks
@@ -28,8 +29,11 @@ export default async function PostsPage({
     return (lastSpace > 0 ? sliced.slice(0, lastSpace) : sliced).trim() + "…";
   }
 
-  const pageSize = 6;
-  const currentPage = Math.max(1, Number(searchParams?.page ?? "1") || 1);
+  const pageSize = 2;
+  const currentPage = Math.max(
+    1,
+    Number(resolvedSearchParams?.page ?? "1") || 1
+  );
   const offset = (currentPage - 1) * pageSize;
   const end = offset + pageSize;
 

@@ -32,3 +32,10 @@ export const postsPageQuery = groq`*[_type == "post"]
   }`;
 
 export const postsCountQuery = groq`count(*[_type == "post"])`;
+
+export const AuthorQuery = groq`*[_type == "author"]{
+  _id,
+  name,
+  image,
+  bio
+} | order(name asc)`;
