@@ -9,7 +9,7 @@ export default async function HomePage() {
 
   return (
     <main>
-      <PostsPage posts={posts} />
+      <PostsPage searchParams={{ page: "1" }} />
     </main>
   );
 }
